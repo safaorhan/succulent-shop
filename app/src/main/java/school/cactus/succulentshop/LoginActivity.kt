@@ -1,6 +1,8 @@
 package school.cactus.succulentshop
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import school.cactus.succulentshop.databinding.ActivityLoginBinding
@@ -23,7 +25,29 @@ class LoginActivity : AppCompatActivity() {
                 passwordInputLayout.validate()
                 identifierInputLayout.validate()
             }
+
+            createAccountButton.setOnClickListener {
+                navigateToSecondActivity()
+            }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_SECOND_ACTIVITY) {
+            if (resultCode == SecondActivity.RESULT_YES) {
+                Log.e("LoginActivity", "Yes!")
+            } else {
+                Log.e("LoginActivity", "Nooo!")
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun navigateToSecondActivity() {
+        val intent = Intent(this, SecondActivity::class.java)
+        intent.putExtra("isLoggedIn", true)
+        startActivityForResult(intent, REQUEST_SECOND_ACTIVITY)
     }
 
     private fun TextInputLayout.validate() {
@@ -38,5 +62,9 @@ class LoginActivity : AppCompatActivity() {
         binding.identifierInputLayout -> identifierValidator
         binding.passwordInputLayout -> passwordValidator
         else -> throw IllegalArgumentException("Cannot find any validator for the given TextInputLayout")
+    }
+
+    companion object {
+        const val REQUEST_SECOND_ACTIVITY = 1001
     }
 }
