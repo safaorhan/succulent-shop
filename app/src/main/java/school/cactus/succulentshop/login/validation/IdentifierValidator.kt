@@ -1,4 +1,7 @@
-package school.cactus.succulentshop
+package school.cactus.succulentshop.login.validation
+
+import school.cactus.succulentshop.R
+import school.cactus.succulentshop.validation.Validator
 
 
 class IdentifierValidator : Validator {

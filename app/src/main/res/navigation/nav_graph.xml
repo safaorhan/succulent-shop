@@ -6,6 +6,16 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="school.cactus.succulentshop.LoginFragment"
-        android:label="LoginFragment" />
+        android:name="school.cactus.succulentshop.login.LoginFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/loginSuccessful"
+            app:destination="@id/productListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="school.cactus.succulentshop.product.list.ProductListFragment"
+        android:label="ProductListFragment" />
+
 </navigation>

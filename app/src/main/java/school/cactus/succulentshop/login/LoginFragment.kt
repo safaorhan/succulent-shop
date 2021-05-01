@@ -1,12 +1,16 @@
-package school.cactus.succulentshop
+package school.cactus.succulentshop.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
+import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.FragmentLoginBinding
+import school.cactus.succulentshop.login.validation.IdentifierValidator
+import school.cactus.succulentshop.login.validation.PasswordValidator
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -29,18 +33,20 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             logInButton.setOnClickListener {
-                passwordInputLayout.validate()
-                identifierInputLayout.validate()
+                if (passwordInputLayout.isValid() and identifierInputLayout.isValid()) {
+                    findNavController().navigate(R.id.loginSuccessful)
+                }
             }
         }
 
         requireActivity().title = getString(R.string.log_in)
     }
 
-    private fun TextInputLayout.validate() {
+    private fun TextInputLayout.isValid(): Boolean {
         val errorMessage = validator().validate(editText!!.text.toString())
         error = errorMessage?.resolveAsString()
         isErrorEnabled = errorMessage != null
+        return errorMessage == null
     }
 
     private fun Int.resolveAsString() = getString(this)
