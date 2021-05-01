@@ -1,29 +1,40 @@
 package school.cactus.succulentshop
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import school.cactus.succulentshop.databinding.ActivityLoginBinding
+import school.cactus.succulentshop.databinding.FragmentLoginBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class LoginFragment : Fragment() {
+    private var _binding: FragmentLoginBinding? = null
+
+    private val binding get() = _binding!!
 
     private val identifierValidator = IdentifierValidator()
+
     private val passwordValidator = PasswordValidator()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        supportActionBar?.title = getString(R.string.log_in)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             logInButton.setOnClickListener {
                 passwordInputLayout.validate()
                 identifierInputLayout.validate()
             }
         }
+
+        requireActivity().title = getString(R.string.log_in)
     }
 
     private fun TextInputLayout.validate() {
@@ -38,5 +49,10 @@ class LoginActivity : AppCompatActivity() {
         binding.identifierInputLayout -> identifierValidator
         binding.passwordInputLayout -> passwordValidator
         else -> throw IllegalArgumentException("Cannot find any validator for the given TextInputLayout")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
