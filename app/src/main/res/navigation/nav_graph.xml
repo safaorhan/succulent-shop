@@ -16,6 +16,19 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="school.cactus.succulentshop.product.list.ProductListFragment"
-        android:label="ProductListFragment" />
+        android:label="ProductListFragment">
+        <action
+            android:id="@+id/openProductDetail"
+            app:destination="@id/productDetailFragment">
+            <argument
+                android:name="productId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="school.cactus.succulentshop.product.detail.ProductDetailFragment"
+        android:label="ProductDetailFragment" />
 </navigation>

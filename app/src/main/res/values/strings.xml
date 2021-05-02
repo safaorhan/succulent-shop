@@ -6,4 +6,5 @@
     <string name="create_an_account">Create an account</string>
     <string name="this_field_is_required">This field is required.</string>
     <string name="identifier_is_too_short">Identifier is too short.</string>
+    <string name="add_to_cart">Add to cart</string>
 </resources>

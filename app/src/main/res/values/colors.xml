@@ -4,4 +4,7 @@
     <color name="dark_teal">#4A7E6F</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primaryText">#DE000000</color>
+    <color name="secondaryText">#424242</color>
+    <color name="highlightText">#212121</color>
 </resources>

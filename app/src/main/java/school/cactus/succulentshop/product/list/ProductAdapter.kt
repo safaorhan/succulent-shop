@@ -11,6 +11,8 @@ import school.cactus.succulentshop.product.list.ProductAdapter.ProductHolder
 
 class ProductAdapter : ListAdapter<Product, ProductHolder>(DIFF_CALLBACK) {
 
+    var itemClickListener: (Product) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val binding = ItemProductBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -18,13 +20,16 @@ class ProductAdapter : ListAdapter<Product, ProductHolder>(DIFF_CALLBACK) {
             false
         )
 
-        return ProductHolder(binding)
+        return ProductHolder(binding, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) =
         holder.bind(getItem(position))
 
-    class ProductHolder(private val binding: ItemProductBinding) :
+    class ProductHolder(
+        private val binding: ItemProductBinding,
+        private val itemClickListener: (Product) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
@@ -36,12 +41,17 @@ class ProductAdapter : ListAdapter<Product, ProductHolder>(DIFF_CALLBACK) {
                 .load(product.imageUrl)
                 .override(512)
                 .into(binding.imageView)
+
+            binding.root.setOnClickListener {
+                itemClickListener(product)
+            }
         }
     }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product) = oldItem == newItem
+            override fun areItemsTheSame(oldItem: Product, newItem: Product) =
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Product, newItem: Product) = oldItem == newItem
         }

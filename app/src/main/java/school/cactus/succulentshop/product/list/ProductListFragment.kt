@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import school.cactus.succulentshop.R
@@ -37,6 +38,11 @@ class ProductListFragment : Fragment() {
         binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
         binding.recyclerView.addItemDecoration(ProductDecoration())
         adapter.submitList(store.products)
+
+        adapter.itemClickListener = {
+            val action = ProductListFragmentDirections.openProductDetail(it.id)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onDestroyView() {
