@@ -15,6 +15,10 @@ class ProductListFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private val adapter = ProductAdapter()
+
+    private val store = ProductStore()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,8 +33,10 @@ class ProductListFragment : Fragment() {
 
         requireActivity().title = getString(R.string.app_name)
 
-        binding.recyclerView.adapter = ProductAdapter()
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
+        binding.recyclerView.addItemDecoration(ProductDecoration())
+        adapter.submitList(store.products)
     }
 
     override fun onDestroyView() {
