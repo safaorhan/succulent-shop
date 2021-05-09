@@ -32,4 +32,9 @@
         android:id="@+id/productDetailFragment"
         android:name="school.cactus.succulentshop.product.detail.ProductDetailFragment"
         android:label="ProductDetailFragment" />
+
+    <action
+        android:id="@+id/tokenExpired"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph" />
 </navigation>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.FragmentProductDetailBinding
 import school.cactus.succulentshop.product.BUNDLE_KEY_PRODUCT_ID
@@ -35,10 +36,13 @@ class ProductDetailFragment : Fragment() {
         val product = store.findProduct(productId)
 
         binding.apply {
-            imageView.setImageResource(product.imageUrl)
             titleText.text = product.title
             priceText.text = product.price
             descriptionText.text = product.description
+
+            Glide.with(binding.root)
+                .load(product.imageUrl)
+                .into(imageView)
         }
     }
 

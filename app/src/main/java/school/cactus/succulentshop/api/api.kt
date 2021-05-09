@@ -12,6 +12,8 @@ private var _api: SucculentShopApi? = null
 // Accessing this will crash if done before calling generate()
 val api get() = _api!!
 
+const val BASE_URL = "https://apps.cactus.school"
+
 fun generateApi(context: Context) {
     if (_api != null) return
 
@@ -29,7 +31,7 @@ fun generateApi(context: Context) {
         .build()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://apps.cactus.school")
+        .baseUrl(BASE_URL)
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
