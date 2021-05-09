@@ -7,4 +7,7 @@
     <string name="this_field_is_required">This field is required.</string>
     <string name="identifier_is_too_short">Identifier is too short.</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="check_your_connection">Please check your connection and try again.</string>
+    <string name="retry">Retry</string>
+    <string name="unexpected_error_occurred">Unexpected error occurred</string>
 </resources>
