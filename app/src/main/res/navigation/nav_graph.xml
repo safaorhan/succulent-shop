@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/productListFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -20,18 +20,18 @@
         android:label="ProductListFragment">
         <action
             android:id="@+id/openProductDetail"
-            app:destination="@id/productDetailFragment">
-            <argument
-                android:name="productId"
-                android:defaultValue="-1"
-                app:argType="integer" />
-        </action>
+            app:destination="@id/productDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="school.cactus.succulentshop.product.detail.ProductDetailFragment"
-        android:label="ProductDetailFragment" />
+        android:label="ProductDetailFragment">
+        <argument
+            android:name="productId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
     <action
         android:id="@+id/tokenExpired"

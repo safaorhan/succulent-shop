@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.FragmentProductDetailBinding
-import school.cactus.succulentshop.product.BUNDLE_KEY_PRODUCT_ID
 import school.cactus.succulentshop.product.list.ProductStore
 
 class ProductDetailFragment : Fragment() {
@@ -17,6 +17,8 @@ class ProductDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val store = ProductStore()
+
+    val args: ProductDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +34,7 @@ class ProductDetailFragment : Fragment() {
 
         requireActivity().title = getString(R.string.app_name)
 
-        val productId = requireArguments().getInt(BUNDLE_KEY_PRODUCT_ID)
-        val product = store.findProduct(productId)
+        val product = store.findProduct(args.productId)
 
         binding.apply {
             titleText.text = product.title
