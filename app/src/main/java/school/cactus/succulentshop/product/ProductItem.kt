@@ -5,5 +5,6 @@ data class ProductItem(
     val title: String,
     val description: String,
     val price: String,
-    val imageUrl: String = ""
+    val imageUrl: String,
+    val highResImageUrl: String,
 )
