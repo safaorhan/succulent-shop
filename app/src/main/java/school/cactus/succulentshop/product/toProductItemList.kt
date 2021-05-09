@@ -12,7 +12,7 @@ private fun Product.toProductItem() = ProductItem(
     title = title,
     description = description,
     price = price.formatPrice(),
-    imageUrl = BASE_URL + image.formats.medium.url
+    imageUrl = BASE_URL + image.formats.small.url
 )
 
 private fun Double.formatPrice() = String.format("$%.2f", this)

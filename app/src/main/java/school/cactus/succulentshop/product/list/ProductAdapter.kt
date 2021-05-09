@@ -39,7 +39,7 @@ class ProductAdapter : ListAdapter<ProductItem, ProductHolder>(DIFF_CALLBACK) {
 
             Glide.with(binding.root.context)
                 .load(product.imageUrl)
-                .override(512)
+                .centerInside()
                 .into(binding.imageView)
 
             binding.root.setOnClickListener {

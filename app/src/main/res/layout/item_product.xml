@@ -13,10 +13,10 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            tools:src="@drawable/plant1" />
 
         <TextView
             android:id="@+id/titleText"
