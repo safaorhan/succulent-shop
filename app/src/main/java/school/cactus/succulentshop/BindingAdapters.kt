@@ -1,8 +1,10 @@
 package school.cactus.succulentshop
 
+import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputLayout
 import school.cactus.succulentshop.product.ProductItem
 import school.cactus.succulentshop.product.list.ProductAdapter
@@ -27,4 +29,13 @@ fun RecyclerView.products(products: List<ProductItem>?, itemClickListener: (Prod
     }
 
     productAdapter.submitList(products.orEmpty())
+}
+
+@BindingAdapter("app:imageUrl")
+fun ImageView.imageUrl(imageUrl: String?) {
+    imageUrl?.let {
+        Glide.with(this)
+            .load(it)
+            .into(this)
+    }
 }
