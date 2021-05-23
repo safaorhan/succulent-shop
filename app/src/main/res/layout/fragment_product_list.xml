@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="school.cactus.succulentshop.product.list.ProductListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        tools:viewBindingIgnore="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:itemClickListener="@{viewModel.itemClickListener}"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:products="@{viewModel.products}"
+            app:spanCount="2"
+            tools:listitem="@layout/item_product" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
