@@ -25,7 +25,7 @@ class ProductListFragment : BaseFragment() {
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

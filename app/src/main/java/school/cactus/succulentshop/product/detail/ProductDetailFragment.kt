@@ -28,7 +28,7 @@ class ProductDetailFragment : BaseFragment() {
     ): View {
         _binding = FragmentProductDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
