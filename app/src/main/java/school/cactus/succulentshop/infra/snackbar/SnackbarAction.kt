@@ -1,4 +1,4 @@
-package school.cactus.succulentshop.snackbar
+package school.cactus.succulentshop.infra.snackbar
 
 import androidx.annotation.StringRes
 

@@ -1,4 +1,4 @@
-package school.cactus.succulentshop.snackbar
+package school.cactus.succulentshop.infra.snackbar
 
 data class SnackbarState(
     val error: String? = null,
