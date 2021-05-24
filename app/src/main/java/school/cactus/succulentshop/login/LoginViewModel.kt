@@ -74,12 +74,12 @@ class LoginViewModel(
     }
 
     private fun isIdentifierValid(): Boolean {
-        _identifierErrorMessage.value = identifierValidator.validate(identifier.value!!)
+        _identifierErrorMessage.value = identifierValidator.validate(identifier.value.orEmpty())
         return _identifierErrorMessage.value == null
     }
 
     private fun isPasswordValid(): Boolean {
-        _passwordErrorMessage.value = passwordValidator.validate(password.value!!)
+        _passwordErrorMessage.value = passwordValidator.validate(password.value.orEmpty())
         return _passwordErrorMessage.value == null
     }
 }
