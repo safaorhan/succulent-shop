@@ -1,34 +1,33 @@
 package school.cactus.succulentshop.product.detail
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import school.cactus.succulentshop.api.api
-import school.cactus.succulentshop.api.product.Product
 import school.cactus.succulentshop.product.ProductItem
+import school.cactus.succulentshop.product.detail.ProductDetailRepository.ProductResult.Failure
+import school.cactus.succulentshop.product.detail.ProductDetailRepository.ProductResult.Success
+import school.cactus.succulentshop.product.detail.ProductDetailRepository.ProductResult.TokenExpired
+import school.cactus.succulentshop.product.detail.ProductDetailRepository.ProductResult.UnexpectedError
 import school.cactus.succulentshop.product.toProductItem
 
 class ProductDetailRepository {
-    fun fetchProductDetail(productId: Int, callback: FetchProductDetailRequestCallback) {
-        api.getProductById(productId).enqueue(object : Callback<Product> {
-            override fun onResponse(call: Call<Product>, response: Response<Product>) {
-                when (response.code()) {
-                    200 -> callback.onSuccess(response.body()!!.toProductItem())
-                    401 -> callback.onTokenExpired()
-                    else -> callback.onUnexpectedError()
-                }
-            }
+    suspend fun fetchProductDetail(productId: Int): ProductResult {
+        val response = try {
+            api.getProductById(productId)
+        } catch (ex: Exception) {
+            null
+        }
 
-            override fun onFailure(call: Call<Product>, t: Throwable) {
-                callback.onFailure()
-            }
-        })
+        return when (response?.code()) {
+            null -> Failure
+            200 -> Success(response.body()!!.toProductItem())
+            401 -> TokenExpired
+            else -> UnexpectedError
+        }
     }
 
-    interface FetchProductDetailRequestCallback {
-        fun onSuccess(product: ProductItem)
-        fun onTokenExpired()
-        fun onUnexpectedError()
-        fun onFailure()
+    sealed class ProductResult {
+        class Success(val product: ProductItem) : ProductResult()
+        object TokenExpired : ProductResult()
+        object UnexpectedError : ProductResult()
+        object Failure : ProductResult()
     }
 }

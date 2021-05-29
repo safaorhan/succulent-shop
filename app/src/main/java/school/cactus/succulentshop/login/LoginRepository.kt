@@ -3,35 +3,33 @@ package school.cactus.succulentshop.login
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import school.cactus.succulentshop.api.GenericErrorResponse
 import school.cactus.succulentshop.api.api
 import school.cactus.succulentshop.api.login.LoginRequest
-import school.cactus.succulentshop.api.login.LoginResponse
+import school.cactus.succulentshop.login.LoginRepository.LoginResult.ClientError
+import school.cactus.succulentshop.login.LoginRepository.LoginResult.Failure
+import school.cactus.succulentshop.login.LoginRepository.LoginResult.Success
+import school.cactus.succulentshop.login.LoginRepository.LoginResult.UnexpectedError
 
 class LoginRepository {
-    fun sendLoginRequest(
+    suspend fun sendLoginRequest(
         identifier: String,
-        password: String,
-        callback: LoginRequestCallback
-    ) {
+        password: String
+    ): LoginResult {
         val request = LoginRequest(identifier, password)
 
-        api.login(request).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                when (response.code()) {
-                    200 -> callback.onSuccess(response.body()!!.jwt)
-                    in 400..499 -> callback.onClientError(response.errorBody()!!.errorMessage())
-                    else -> callback.onUnexpectedError()
-                }
-            }
+        val response = try {
+            api.login(request)
+        } catch (ex: Exception) {
+            null
+        }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                callback.onFailure()
-            }
-        })
+        return when (response?.code()) {
+            null -> Failure
+            200 -> Success(response.body()!!.jwt)
+            in 400..499 -> ClientError(response.errorBody()!!.errorMessage())
+            else -> UnexpectedError
+        }
     }
 
     private fun ResponseBody.errorMessage(): String {
@@ -41,10 +39,10 @@ class LoginRepository {
         return loginErrorResponse.message[0].messages[0].message
     }
 
-    interface LoginRequestCallback {
-        fun onSuccess(jwt: String)
-        fun onClientError(errorMessage: String)
-        fun onUnexpectedError()
-        fun onFailure()
+    sealed class LoginResult {
+        class Success(val jwt: String) : LoginResult()
+        class ClientError(val errorMessage: String) : LoginResult()
+        object UnexpectedError : LoginResult()
+        object Failure : LoginResult()
     }
 }
