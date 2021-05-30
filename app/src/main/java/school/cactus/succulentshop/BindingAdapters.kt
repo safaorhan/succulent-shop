@@ -20,7 +20,9 @@ val productAdapter = ProductAdapter()
 
 @BindingAdapter("app:products", "app:itemClickListener")
 fun RecyclerView.products(products: List<ProductItem>?, itemClickListener: (ProductItem) -> Unit) {
-    adapter = productAdapter
+    if (adapter != productAdapter) {
+        adapter = productAdapter
+    }
 
     productAdapter.itemClickListener = itemClickListener
 

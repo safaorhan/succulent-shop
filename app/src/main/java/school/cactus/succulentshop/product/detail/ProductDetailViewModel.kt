@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.infra.BaseViewModel
@@ -29,11 +30,13 @@ class ProductDetailViewModel(
     }
 
     private fun fetchProduct() = viewModelScope.launch {
-        when (val result = repository.fetchProductDetail(productId)) {
-            is Success -> onSuccess(result.product)
-            TokenExpired -> onTokenExpired()
-            UnexpectedError -> onUnexpectedError()
-            Failure -> onFailure()
+        repository.fetchProductDetail(productId).collect {
+            when (it) {
+                is Success -> onSuccess(it.product)
+                TokenExpired -> onTokenExpired()
+                UnexpectedError -> onUnexpectedError()
+                Failure -> onFailure()
+            }
         }
     }
 

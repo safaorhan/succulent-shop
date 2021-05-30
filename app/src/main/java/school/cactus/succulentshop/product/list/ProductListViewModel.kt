@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.infra.BaseViewModel
@@ -17,6 +18,7 @@ import school.cactus.succulentshop.product.list.ProductListRepository.ProductLis
 
 class ProductListViewModel(private val repository: ProductListRepository) : BaseViewModel() {
     private val _products = MutableLiveData<List<ProductItem>>()
+
     val products: LiveData<List<ProductItem>> = _products
 
     val itemClickListener: (ProductItem) -> Unit = {
@@ -29,16 +31,19 @@ class ProductListViewModel(private val repository: ProductListRepository) : Base
     }
 
     private fun fetchProducts() = viewModelScope.launch {
-        when (val result = repository.fetchProducts()) {
-            is Success -> onSuccess(result.products)
-            TokenExpired -> onTokenExpired()
-            UnexpectedError -> onUnexpectedError()
-            Failure -> onFailure()
+        repository.fetchProducts().collect {
+
+            when (it) {
+                is Success -> onSuccess(it.products)
+                TokenExpired -> onTokenExpired()
+                UnexpectedError -> onUnexpectedError()
+                Failure -> onFailure()
+            }
         }
     }
 
     private fun onSuccess(products: List<ProductItem>) {
-        _products.value = products
+        _products.postValue(products)
     }
 
     private fun onTokenExpired() {
