@@ -1,34 +1,33 @@
 package school.cactus.succulentshop.product.list
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import school.cactus.succulentshop.api.api
-import school.cactus.succulentshop.api.product.Product
 import school.cactus.succulentshop.product.ProductItem
+import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Failure
+import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Success
+import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.TokenExpired
+import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.UnexpectedError
 import school.cactus.succulentshop.product.toProductItemList
 
 class ProductListRepository {
-    fun fetchProducts(callback: FetchProductsRequestCallback) {
-        api.listAllProducts().enqueue(object : Callback<List<Product>> {
-            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
-                when (response.code()) {
-                    200 -> callback.onSuccess(response.body()!!.toProductItemList())
-                    401 -> callback.onTokenExpired()
-                    else -> callback.onUnexpectedError()
-                }
-            }
+    suspend fun fetchProducts(): ProductListResult {
+        val response = try {
+            api.listAllProducts()
+        } catch (ex: Exception) {
+            null
+        }
 
-            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                callback.onFailure()
-            }
-        })
+        return when (response?.code()) {
+            null -> Failure
+            200 -> Success(response.body()!!.toProductItemList())
+            401 -> TokenExpired
+            else -> UnexpectedError
+        }
     }
 
-    interface FetchProductsRequestCallback {
-        fun onSuccess(products: List<ProductItem>)
-        fun onTokenExpired()
-        fun onUnexpectedError()
-        fun onFailure()
+    sealed class ProductListResult {
+        class Success(val products: List<ProductItem>) : ProductListResult()
+        object Failure : ProductListResult()
+        object TokenExpired : ProductListResult()
+        object UnexpectedError : ProductListResult()
     }
 }
